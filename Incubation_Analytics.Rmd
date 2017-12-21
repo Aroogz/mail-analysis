@@ -1,0 +1,161 @@
+---
+title: "Incubation_Analytics"
+author: "Akin"
+date: "October 14, 2016"
+output: html_document
+---
+
+
+## Fetching Data
+```{r fetching data1}
+incubation <- read.csv("./incpreincideasubmissions/Incubation Application-report (Edited) (1).csv",
+                       stringsAsFactors = FALSE)
+```
+
+## ANALYSIS OF INCUBATION
+```{r echo=FALSE}
+options(warn = -1,show.error.messages = F)
+```
+This report processes the submissions received from the incubation-idea submission. The various fieds collected are listed below:
+```{r variables}
+names(incubation)
+```
+The report makes give some certain insights derivable from the data collected from the respondents
+
+## Preparing Workspace
+
+```{r preparing workspace, echo=FALSE, message=FALSE}
+rm(list = ls())
+if("dplyr" %in% row.names(installed.packages()) == FALSE){install.packages("dplyr")}
+if ("ggplot2" %in% row.names(installed.packages()) == FALSE){install.packages("ggplot2")}
+if ("ggmap" %in% row.names(installed.packages()) == FALSE){install.packages("ggmap")}
+if ("maptools" %in% row.names(installed.packages()) == FALSE){install.packages("maptools")}
+if ("maps" %in% row.names(installed.packages()) == FALSE){install.packages("maps")}
+if ("rgeos" %in% row.names(installed.packages()) == FALSE){install.packages("rgeos")}
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+library(maptools)
+library(maps)
+library(rgeos)
+setwd("c:/Users/AROOGZ/Documents/My Works/WORK - CcHUB/Inc and Pre-Inc/")
+```
+
+
+## Fetching Data
+```{r fetching data}
+incubation <- read.csv("./incpreincideasubmissions/Incubation Application-report (Edited) (1).csv",
+                       stringsAsFactors = FALSE)
+```
+
+
+## Preprocessing
+```{r }
+incubation_edit <- unique(incubation)
+  
+#function to get the equivalent willingness
+getwilling <- function(code){
+  if (code == 1){
+    return("willing")
+  }
+  else{
+    return("notwilling")
+  }
+}
+
+incubation_edit <- mutate(incubation, willingness= lapply(incubation$Are.you.willing.to.move.to.Lagos.for.next.6.months., getwilling))
+
+#convert dates
+incubation_edit <- mutate(incubation_edit, 
+                          applicationStart = as.Date(incubation_edit$Start.Date..UTC., "%m/%d/%Y %H:%M"),
+                          applicationEnd = as.Date(incubation_edit$Submit.Date..UTC., "%m/%d/%Y %H:%M"))
+
+#get the time taken to fill the form
+formFilling <- vector()
+for (i in seq(length(incubation_edit$Submit.Date..UTC.))){
+  timediff <- difftime(incubation_edit$applicationEnd[i], incubation_edit$applicationStart[i], units = "days")
+  timediff <- as.numeric(timediff)
+  formFilling <- c(formFilling, timediff)
+  
+}
+incubation_edit <- mutate(incubation_edit, formFillingTime= formFilling)
+
+incubation_edit <- mutate(incubation_edit, submissionMonth = months(incubation_edit$applicationEnd, abbreviate = T))
+incubation_edit <- mutate(incubation_edit, willingness= as.character(incubation_edit$willingness))
+
+#improve on location
+incubation_edit <- mutate(incubation_edit, 
+                          location= paste(incubation_edit$Current.location, 
+                                          "Nigeria"))
+```
+
+
+## Showing the Visuals
+```{r total submission}
+par(mar = c(0,0,0,0))
+plot(c(0, 1), c(0, 1), ann = F, 
+     bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+
+text(x=0.5, y=0.5, paste("TOTAL NUMBER OF UNIQUE SUBMISSIONS\n",
+                          as.character(nrow(incubation_edit))), 
+     cex = 1.6, col = "black")
+```
+
+We had an almost neglible number of persons unwilling to come to Lagos of the total number of idea submissions. This is obvious from the plot below derived from a yes or no response as given by the `Are.you.willing.to.move.to.Lagos.for.next.6.months.`
+
+## Willingness to Come to Lagos
+```{r willingness}
+#willingness to come
+will <- as.data.frame(table(incubation_edit$willingness, 
+                                   dnn = c("willingness")))
+
+ggplot(will, aes(will$willingness, 
+                        will$Freq))+geom_bar(stat = "identity",
+                                                    #col = "red",
+                                                    #fill = "blue",
+                                                    alpha = 0.4)+labs(x =
+      "willingness to come to Lagos", y = "Number of Submissions")+ggtitle(
+        "The Willingness to Come To Lagos for 6 Months")+geom_text(
+          aes(label = Freq), size = 5, vjust= "middle")+theme_bw()
+```
+
+Majority of the submissions received come from within Lagos (as would normally be expected) and largely, the Southwest with just a few more outside these areas such as the middle-belt and the South-South. Submissions were not recieived from the Northern Part of the Country.
+
+The following visualisation helps to show this distribution. The response to the `Current.location` field has been used to generate reasonably approximate locations for the plotted points. The deeper blue colours signifies more submissions from a given location
+
+## Locations
+```{r location}
+
+#loc <- incubation_edit$location
+#loc.code <- geocode(location = loc)
+
+loc.code <- read.csv("./incubation_locations.csv", stringsAsFactors = F)
+mp <- NULL
+mapWorld <- borders("world", regions = "Nigeria", colour="gray50", fill="gray50") # create a layer of borders
+mp <- ggplot() +   mapWorld
+
+#Now Layer the cities on top
+mp <- mp+ geom_point(aes(x=loc.code$lon, y=loc.code$lat) ,color="blue", size=3, alpha= 0.3) 
+mp + coord_cartesian(ylim = c(0,15), xlim = c(0, 20))+labs(x= "", 
+                                                           y= "", title= "Distribution of the Submission Clusters Across Nigeria")+theme_bw()
+
+```
+
+## Moving Forward
+
+Effort is still being made to deriv more information on the data. However, the following are my recommendations:
+
+- I will suggest that more variables be collected, such as;
+
+  + Age
+
+  + level of Education
+
+  These will further help gain insights into the idea submission as well  as the individuals, providing us with potentially useful information on the distribution of respondents
+
+- Also the use of categorical variables where applicable will ease classification
+
+ 
+
+
+

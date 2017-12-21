@@ -1,0 +1,91 @@
+ pre-inc
+
+[1] "X"                                                                           
+ [2] "X."                                                                          
+ [3] "Describe.the.problem.challenge.you.seek.to.address...100.Words."             
+ [4] "Describe.your.proposed.solution..100.words."                                 
+ [5] "Name.of.proposed.solution"                                                   
+ [6] "Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+ [7] "How.do.these.target.users.currently.meet.their.need...100.words."            
+ [8] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+ [9] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+[10] "Start.Date..UTC."                                                            
+[11] "Submit.Date..UTC."                                                           
+[12] "Network.ID"                                                                  
+[13] "sector"                                                                      
+[14] "presence"                                                                    
+[15] "presenceCode" 
+
+full_prev_pre_inc
+
+[1] "Email.Address"                                                               
+ [2] "Describe.the.problem.challenge.you.seek.to.address...100.Words."             
+ [3] "Fieldset1"                                                                   
+ [4] "How.do.these.target.users.currently.meet.their.need...100.words."            
+ [5] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+ [6] "page"                                                                        
+ [7] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+ [8] "What.is.your.proposed.solution...100.words."                                 
+ [9] "What.sector.of.the.economy.does.it.address."                                 
+[10] "Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+[11] "dates"  
+
+Remove:
+pre_inc: 1,2,5,11,12,14,15
+full_prev_pre_inc: 1,3,6
+
+stage 2
+m_pre_inc
+[1] "Describe.the.problem.challenge.you.seek.to.address...100.Words."             
+[2] "Describe.your.proposed.solution..100.words."                                 
+[3] "Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+[4] "How.do.these.target.users.currently.meet.their.need...100.words."            
+[5] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+[6] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+[7] "Start.Date..UTC."                                                            
+[8] "sector"
+
+m_pre_inc_prev
+[1] "Describe.the.problem.challenge.you.seek.to.address...100.Words."             
+[2] "How.do.these.target.users.currently.meet.their.need...100.words."            
+[3] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+[4] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+[5] "What.is.your.proposed.solution...100.words."                                 
+[6] "What.sector.of.the.economy.does.it.address."                                 
+[7] "Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+[8] "dates"
+
+stage 3
+m_pre_inc
+[1] "Describe.the.problem.challenge.you.seek.to.address...100.Words."             
+[2] "Describe.your.proposed.solution..100.words."                                 
+[3] "Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+[4] "How.do.these.target.users.currently.meet.their.need...100.words."            
+[5] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+[6] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+[7] "Start.Date..UTC."                                                            
+[8] "sector"    
+
+m_pre_inc
+[1] "Describe.the.problem.challenge.you.seek.to.address...100.Words."             
+[2] "How.do.these.target.users.currently.meet.their.need...100.words."            
+[3] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+[4] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+[5] "What.is.your.proposed.solution...100.words."                                 
+[6] "Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+[7] "dates"                                                                       
+[8] "sector"
+
+arrange : 1,5,6,2,4,3,7,8
+
+arrange name:
+"Describe.the.problem.challenge.you.seek.to.address...100.Words.","Describe.your.proposed.solution..100.words."                                 
+"Who.has.this.need..profile.of.users...size.of.potential.market....100.words."
+[4] "How.do.these.target.users.currently.meet.their.need...100.words."            
+[5] "Tell.us.about.yourself.and.others.working.on.the.idea..100.words."           
+[6] "How.much.time.are.you.willing.to.commit.to.the.Idea.Project"                 
+[7] "Start.Date..UTC."                                                            
+[8] "sector"
+
+
+
